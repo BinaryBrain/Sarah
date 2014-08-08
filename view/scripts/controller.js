@@ -1,24 +1,27 @@
 var pages = {};
-var images = {};
 
 /**
  * @name	String: name of page
  * @prev	String: name of prev page
  * @nexts	Array of String: names of next pages
  * @image   String: Image URL
- * @text	String: ???
+ * @text	String: Text URL
  */
 
-function Page(name, prev, nexts, text, image) {
+function Page(name, prev, text, image) {
 	this.name = name;
 	this.prev = prev;
-	this.nexts = nexts;
-	this.text = text;
+
+	if(text !== undefined) {
+		this.text = text;
+	} else {
+		this.text = name+'/text.txt';
+	}
 
 	if(image !== undefined) {
 		this.image = image;
 	} else {
-		this.image = pages[this.prev].image;
+		this.image = name+'/background.jpg';
 	}
 
 	if(pages[this.name] !== undefined) {
@@ -29,18 +32,109 @@ function Page(name, prev, nexts, text, image) {
 }
 
 // Création des pages
-new Page("init", null, ["police", "indices", "poursuite"]);
-new Page("police", "init", []);
-new Page("indices", "init", []);
-new Page("poursuite", "init", []);
+new Page("init", null);
+new Page("police", "init");
+new Page("indices", "init");
+new Page("poursuite", "init");
+new Page("poney", "police");
+//new Page("???", "???", ["fin"]);
 
 function init() {
 	if (pages.init === undefined) {
 		alert("Erreur: page init introuvable");
 		return;
 	}
+
+	createPage("init", function () {
+		display("init");
+	});
+}
+
+// Display a page
+function display(name) {
+	$('.page').addClass("hidden");
+	$("#"+name).removeClass("hidden");
+	$('#'+name+' .content').perfectScrollbar('update');
+
+	if(pages[name].nexts) {
+		loadFuturePages(pages[name].nexts);
+	}
+}
+
+function addLineBreak(text) {
+	var htmls = [];
+	var lines = text.split(/\n/);
+
+	var tmpDiv = $(document.createElement('div'));
+	for (var i = 0 ; i < lines.length ; i++) {
+		htmls.push(tmpDiv.text(lines[i]).html());
+	}
+	return htmls.join("<br>");
+}
+
+function parseText(str) {
+	var regex = /\{\{([A-Za-z0-9]+)\}\}(.*)/gi;
+	return str.replace(regex, '<div class="choice" data-choice="$1">$2</div>');
+}
+
+function getNexts(str) {
+	var regex2 = /\{\{([A-Za-z0-9]+)\}\}/gi;
+	var nexts = str.match(regex2);
+
+	if(nexts) {
+		return nexts.map(function (e) {
+			return e.substring(2, e.length-2);
+		});
+	} else {
+		return null;
+	}
+}
+
+function createPage(name, cb) {
+	var page = pages[name];
+	var text = page.text;
+	var image = page.image;
+
+	var html = '';
+	html += '<div id="'+name+'" class="container hidden page">';
+		html += '<div class="wrapper">';
+			html += '<div class="content">';
+				html += '';
+			html += '</div>';
+		html += '</div>';
+	html += '</div>';
+
+	$("body").append(html);
+
+	$.get('pages/'+text, function (data) {
+		page.nexts = getNexts(data);
+
+		$('#'+name+' .content').html(parseText(addLineBreak(data)));
+		$('#'+name+' .content').perfectScrollbar();
+
+		if(cb) {
+			cb();
+		}
+	})
+
+	$('#'+name).css({ 'background-image': 'url(pages/'+image+')' });
+}
+
+function loadFuturePages(nexts) {
+	for (var i = nexts.length - 1; i >= 0; i--) {
+		createPage(nexts[i]);
+	}
 }
 
 $(function () {
 	init();
+	
+	$('body').on('click', '.choice', function() {
+		var choice = $(this).attr('data-choice');
+		if(pages[choice] === undefined) {
+			alert('Erreur: Page introuvable ("'+choice+'").');
+		}
+
+		display(choice);
+	});
 });
