@@ -45,6 +45,7 @@ function init(page) {
 		return;
 	}
 
+	deleteOldPages();
 	createPage(page, function () {
 		display(page);
 	});
@@ -128,6 +129,10 @@ function loadFuturePages(nexts) {
 	}
 }
 
+function deleteOldPages() {
+	$(".container").remove();
+}
+
 $(function () {
 	var anchor = window.location.hash.substring(1);
 	if(anchor === "") {
@@ -161,6 +166,7 @@ $(function () {
 			page = e.state.page;
 		}
 
+		deleteOldPages();
 		createPage(page, function () {
 			display(page);
 		})
