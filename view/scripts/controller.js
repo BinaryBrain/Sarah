@@ -39,15 +39,17 @@ new Page("poursuite", "init");
 new Page("poney", "police");
 //new Page("???", "???", ["fin"]);
 
-function init() {
+function init(page) {
 	if (pages.init === undefined) {
-		alert("Erreur: page init introuvable");
+		alert("Erreur: page \""+page+"\" introuvable");
 		return;
 	}
 
-	createPage("init", function () {
-		display("init");
+	createPage(page, function () {
+		display(page);
 	});
+
+	history.pushState({ page: page }, page, '#'+page);
 }
 
 // Display a page
@@ -110,7 +112,7 @@ function createPage(name, cb) {
 		page.nexts = getNexts(data);
 
 		$('#'+name+' .content').html(parseText(addLineBreak(data)));
-		$('#'+name+' .content').perfectScrollbar();
+		$('#'+name+' .content').perfectScrollbar({ suppressScrollX: true });
 
 		if(cb) {
 			cb();
@@ -127,14 +129,40 @@ function loadFuturePages(nexts) {
 }
 
 $(function () {
-	init();
+	var anchor = window.location.hash.substring(1);
+	if(anchor === "") {
+		anchor = "init";
+	}
+
+	init(anchor);
 	
 	$('body').on('click', '.choice', function() {
 		var choice = $(this).attr('data-choice');
 		if(pages[choice] === undefined) {
 			alert('Erreur: Page introuvable ("'+choice+'").');
 		}
+		
+		history.pushState({ page: choice }, choice, "#"+choice);
 
 		display(choice);
 	});
+
+	window.onpopstate = function(e) {
+		var page;
+
+		if(!e.state || e.state.page === undefined) {
+			var anchor = window.location.hash.substring(1);
+			if(anchor === "") {
+				anchor = "init";
+			}
+
+			page = anchor
+		} else {
+			page = e.state.page;
+		}
+
+		createPage(page, function () {
+			display(page);
+		})
+	};
 });
