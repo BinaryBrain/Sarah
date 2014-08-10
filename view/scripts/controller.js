@@ -8,9 +8,8 @@ var pages = {};
  * @text	String: Text URL
  */
 
-function Page(name, prev, text, image, music, sound) {
+function Page(name, text, image, music, sound) {
 	this.name = name;
-	this.prev = prev;
 
 	if(text !== undefined) {
 		this.text = text+'.txt';
@@ -44,12 +43,14 @@ function Page(name, prev, text, image, music, sound) {
 }
 
 // Création des pages
-new Page("init", null);
-new Page("police", "init");
-new Page("indices", "init");
-new Page("poursuite", "init");
-new Page("poney", "police");
-//new Page("???", "???", ["fin"]);
+new Page("baiser");
+new Page("colline");
+new Page("croire");
+new Page("indices");
+new Page("init");
+new Page("legume");
+new Page("parents");
+new Page("police");
 
 function init(page) {
 	if (pages.init === undefined) {
