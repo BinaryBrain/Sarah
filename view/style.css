@@ -64,8 +64,15 @@ html, body {
 
 .choice {
 	cursor: pointer;
-	border: 2px white solid;
-	padding: 10px;
+	border: 2px #eee solid;
+	transition: all 0.25s;
+	padding: 8px 15px;
+	display: inline-block;
+}
+
+.choice:hover {
+	/*border: 2px #aaa solid;*/
+	background-color: #611;
 }
 
 .hidden {
