@@ -8,20 +8,32 @@ var pages = {};
  * @text	String: Text URL
  */
 
-function Page(name, prev, text, image) {
+function Page(name, prev, text, image, music, sound) {
 	this.name = name;
 	this.prev = prev;
 
 	if(text !== undefined) {
-		this.text = text;
+		this.text = text+'.txt';
 	} else {
 		this.text = name+'/text.txt';
 	}
 
 	if(image !== undefined) {
-		this.image = image;
+		this.image = image+'.jpg';
 	} else {
 		this.image = name+'/background.jpg';
+	}
+
+	if(music !== undefined) {
+		this.music = { mp3: music+'.mp3', ogg: music+'.ogg' };
+	} else {
+		this.music = { mp3: name+'/music.mp3', ogg: name+'/music.ogg' };
+	}
+
+	if(sound !== undefined) {
+		this.sound = { mp3: sound+'.mp3', ogg: sound+'.ogg' };
+	} else {
+		this.sound = { mp3: name+'/sound.mp3', ogg: name+'/sound.ogg' };
 	}
 
 	if(pages[this.name] !== undefined) {
@@ -56,8 +68,15 @@ function init(page) {
 // Display a page
 function display(name) {
 	$('.page').addClass("hidden");
+	$('.page .music, .page .sound').get().map(function (e) {
+		e.play();
+	});
+
 	$("#"+name).removeClass("hidden");
 	$('#'+name+' .content').perfectScrollbar('update');
+	$('#'+name+' .music, #'+name+' .sound').get().map(function (e) {
+		e.play();
+	});
 
 	if(pages[name].nexts) {
 		loadFuturePages(pages[name].nexts);
@@ -97,14 +116,21 @@ function createPage(name, cb) {
 	var page = pages[name];
 	var text = page.text;
 	var image = page.image;
+	var music = page.music;
+	var sound = page.sound;
 
 	var html = '';
 	html += '<div id="'+name+'" class="container hidden page">';
 		html += '<div class="wrapper">';
-			html += '<div class="content">';
-				html += '';
-			html += '</div>';
+			html += '<div class="content"></div>';
 		html += '</div>';
+
+		html += '<audio class="music" loop preload="auto">';
+			html += '<source src="pages/'+music.ogg+'" type="audio/ogg"><source src="pages/'+music.mp3+'" type="audio/mpeg">';
+		html += '</audio>';
+		html += '<audio class="sound" preload="auto">';
+			html += '<source src="pages/'+sound.ogg+'" type="audio/ogg"><source src="pages/'+sound.mp3+'" type="audio/mpeg">';
+		html += '</audio>';
 	html += '</div>';
 
 	$("body").append(html);
