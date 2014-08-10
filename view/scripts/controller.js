@@ -69,7 +69,7 @@ function init(page) {
 function display(name) {
 	$('.page').addClass("hidden");
 	$('.page .music, .page .sound').get().map(function (e) {
-		e.play();
+		e.pause();
 	});
 
 	$("#"+name).removeClass("hidden");
@@ -95,7 +95,7 @@ function addLineBreak(text) {
 }
 
 function parseText(str) {
-	var regex = /\{\{([A-Za-z0-9]+)\}\}(.*)/gi;
+	var regex = /\{\{([A-Za-z0-9]+)\}\}\s*(.*)/gi;
 	return str.replace(regex, '<div class="choice" data-choice="$1">$2</div>');
 }
 
