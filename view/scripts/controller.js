@@ -18,9 +18,9 @@ function Page(name, text, image, music, sound) {
 	}
 
 	if(image !== undefined) {
-		this.image = image+'.jpg';
+		this.image = image+'.png';
 	} else {
-		this.image = name+'/background.jpg';
+		this.image = name+'/background.png';
 	}
 
 	if(music !== undefined) {
@@ -73,7 +73,14 @@ function display(name) {
 		e.pause();
 	});
 
+	$('#'+name+' .wrapper').hide();
+
+	setTimeout(function() {
+		$('#'+name+' .wrapper').fadeIn(1000);
+	}, 1000)
+
 	$("#"+name).removeClass("hidden");
+
 	$('#'+name+' .content').perfectScrollbar('update');
 	$('#'+name+' .music, #'+name+' .sound').get().map(function (e) {
 		e.play();
@@ -173,10 +180,11 @@ $(function () {
 		if(pages[choice] === undefined) {
 			alert('Erreur: Page introuvable ("'+choice+'").');
 		}
-		
-		history.pushState({ page: choice }, choice, "#"+choice);
 
-		display(choice);
+		$('.wrapper').fadeOut(1000, function () {
+			history.pushState({ page: choice }, choice, "#"+choice);
+			display(choice);
+		});
 	});
 
 	window.onpopstate = function(e) {
