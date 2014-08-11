@@ -8,33 +8,17 @@ var pages = {};
  * @text	String: Text URL
  */
 
-function Page(name, text, image, music, sound) {
+function Page(name, sameMusic, sameSound) {
 	this.name = name;
 
-	if(text !== undefined) {
-		this.text = text+'.txt';
-	} else {
-		this.text = name+'/text.txt';
-	}
-
-	if(image !== undefined) {
-		this.image = image+'.png';
-	} else {
-		this.image = name+'/background.png';
-	}
-
-	if(music !== undefined) {
-		this.music = { mp3: music+'.mp3', ogg: music+'.ogg' };
-	} else {
-		this.music = { mp3: name+'/music.mp3', ogg: name+'/music.ogg' };
-	}
-
-	if(sound !== undefined) {
-		this.sound = { mp3: sound+'.mp3', ogg: sound+'.ogg' };
-	} else {
-		this.sound = { mp3: name+'/sound.mp3', ogg: name+'/sound.ogg' };
-	}
-
+	this.sameMusic = (sameMusic !== undefined) ? sameMusic : false;
+	this.sameSound = (sameSound !== undefined) ? sameSound : false;
+	
+	this.text = name+'/text.txt';
+	this.image = name+'/background.png';
+	this.music = { mp3: name+'/music.mp3', ogg: name+'/music.ogg' };
+	this.sound = { mp3: name+'/sound.mp3', ogg: name+'/sound.ogg' };
+	
 	if(pages[this.name] !== undefined) {
 		alert("Erreur: Une page a déjà ce nom (\""+this.name+"\").");
 	}
@@ -51,6 +35,7 @@ new Page("init");
 new Page("legume");
 new Page("parents");
 new Page("police");
+new Page("suicide", true);
 
 function init(page) {
 	if (pages.init === undefined) {
@@ -68,18 +53,28 @@ function init(page) {
 
 // Display a page
 function display(name) {
-	$('.page').addClass("hidden");
-	$('.page .music, .page .sound').get().map(function (e) {
-		e.pause();
-	});
+	$("#"+name).removeClass("hidden");
+	$('.page:not(#'+name+')').addClass("hidden");
+	
+	if(!pages[name].sameMusic) {
+		$('.page .music').get().map(function (e) {
+			e.pause();
+		});
+	}
+
+	if(!pages[name].sameSound) {
+		$('.page .sound').get().map(function (e) {
+			e.pause();
+		});
+	}
 
 	$('#'+name+' .wrapper').hide();
 
 	setTimeout(function() {
 		$('#'+name+' .wrapper').fadeIn(1000);
-	}, 1000)
+		$('footer').animate({ 'bottom': "0px" }, 1000);
+	}, 1000);
 
-	$("#"+name).removeClass("hidden");
 
 	$('#'+name+' .content').perfectScrollbar('update');
 	$('#'+name+' .music, #'+name+' .sound').get().map(function (e) {
@@ -133,12 +128,16 @@ function createPage(name, cb) {
 			html += '<div class="content"></div>';
 		html += '</div>';
 
-		html += '<audio class="music" loop preload="auto">';
-			html += '<source src="pages/'+music.ogg+'" type="audio/ogg"><source src="pages/'+music.mp3+'" type="audio/mpeg">';
-		html += '</audio>';
-		html += '<audio class="sound" preload="auto">';
-			html += '<source src="pages/'+sound.ogg+'" type="audio/ogg"><source src="pages/'+sound.mp3+'" type="audio/mpeg">';
-		html += '</audio>';
+		if(!page.sameMusic) {
+			html += '<audio class="music" loop preload="auto">';
+				html += '<source src="pages/'+music.ogg+'" type="audio/ogg"><source src="pages/'+music.mp3+'" type="audio/mpeg">';
+			html += '</audio>';
+		}
+		if(!page.sameSound) {
+			html += '<audio class="sound" preload="auto">';
+				html += '<source src="pages/'+sound.ogg+'" type="audio/ogg"><source src="pages/'+sound.mp3+'" type="audio/mpeg">';
+			html += '</audio>';
+		}
 	html += '</div>';
 
 	$("body").append(html);
@@ -181,10 +180,12 @@ $(function () {
 			alert('Erreur: Page introuvable ("'+choice+'").');
 		}
 
+		$('footer').animate({ 'bottom': "-30px" }, 1000);
 		$('.wrapper').fadeOut(1000, function () {
-			history.pushState({ page: choice }, choice, "#"+choice);
 			display(choice);
 		});
+
+		history.pushState({ page: choice }, choice, "#"+choice);
 	});
 
 	window.onpopstate = function(e) {

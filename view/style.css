@@ -22,6 +22,8 @@
 html, body {
 	height: 100%;
 	width: 100%;
+
+	overflow: hidden;
 }
 
 .container {
@@ -32,17 +34,19 @@ html, body {
 	-moz-background-size: cover;
 	-o-background-size: cover;
 	background-size: cover;
+
+	overflow: hidden;
 }
 
 .wrapper {
 	position: absolute;
 	top: 0;
-	bottom: 0;
+	bottom: 30px;
 	left: 200px;
 	right: 200px;
 	padding: 30px;
 
-	background-color: rgba(0, 0, 0, 0.5);
+	background-color: rgba(0, 0, 0, 0.7);
 }
 
 .content {
@@ -54,9 +58,7 @@ html, body {
 	/*text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);*/
 	/*text-shadow: 1px 1px 1px #000, -1px -1px 1px #000, -2px -2px 5px #000, 2px 2px 5px #000 */
 
-	font-family: 'Lora';
-	font-family: 'Droid Serif';
-
+	font-family: 'Lora', 'Droid Serif', Serif;
 	color: white;
 
 	overflow: hidden;
@@ -77,4 +79,22 @@ html, body {
 
 .hidden {
 	display: none;
+}
+
+footer {
+	position: absolute;
+	bottom: -30px;
+	height: 20px;
+	left: 200px;
+	right: 200px;
+
+	padding: 5px 20px;
+
+	z-index: 100;
+
+	background-color: rgba(0, 0, 0, 0.7);
+
+	font-family: 'Lora', 'Droid Serif', Serif;
+	color: white;
+	text-align: right;
 }
