@@ -54,7 +54,7 @@ function init(page) {
 // Display a page
 function display(name) {
 	$("#"+name).removeClass("hidden");
-	$('.page:not(#'+name+')').addClass("hidden");
+	$('.page:not(#'+name+')').remove();
 	
 	if(!pages[name].sameMusic) {
 		$('.page .music').get().map(function (e) {
@@ -158,7 +158,9 @@ function createPage(name, cb) {
 
 function loadFuturePages(nexts) {
 	for (var i = nexts.length - 1; i >= 0; i--) {
-		createPage(nexts[i]);
+		if($("#"+nexts[i]).length === 0) {
+			createPage(nexts[i]);
+		}
 	}
 }
 
@@ -181,7 +183,7 @@ $(function () {
 		}
 
 		$('footer').animate({ 'bottom': "-30px" }, 1000);
-		$('.wrapper').fadeOut(1000, function () {
+		$('.container:not(.hidden) .wrapper').fadeOut(1000, function () {
 			display(choice);
 		});
 
