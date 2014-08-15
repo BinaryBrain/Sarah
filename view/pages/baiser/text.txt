@@ -12,6 +12,6 @@ Bien évidemment il ne lui restait plus qu'à aller voir son amie chez elle dire
 
 En arrivant sur place, elle trouva la porte entrouverte et couverte de sang.
 
-{{parents}} Elle décida donc d'entrer.
+{{parents}} [[Elle décida donc d'entrer.]]
 
-{{police}} Elle décida d'appeler la police.
+{{police}} [[Elle décida d'appeler la police.]]

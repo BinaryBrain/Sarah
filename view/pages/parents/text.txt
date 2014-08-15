@@ -4,8 +4,8 @@ L'estomac de Milena fit un bond. L'odeur était infâme, vomitive. Il lui était
 
 Milena vomit, plusieurs fois. Elle tenait à peine debout sur ses jambes frêles perturbées par la vision d'horreur qui s'offrait à elle. Quel genre de malade pouvait faire ce genre de choses? C'était impensable, tant de rage, tant de haine! Et Sarah? Où était-elle? Était-elle morte? La jeune femme sentit son œsophage se contracter à nouveau, mais son estomac était vide et rien ne sortit de sa bouche. Oh mon dieu... Elle tomba à la renverse dans la flaque de sang. Elle resta là, assise, le regard dans le vide pendant plusieurs longues minutes.
 
-{{police}} Elle finit par se relever, attraper le téléphone et appeler la police.
+{{police}} [[Elle finit par se relever, attraper le téléphone et appeler la police.]]
 
-{{indices}} Elle ne pouvait rester là à rien faire, elle décida de fouiller l'appartement afin de découvrir ce qui avait pu se passer.
+{{indices}} [[Elle ne pouvait rester là à rien faire, elle décida de fouiller l'appartement afin de découvrir ce qui avait pu se passer.]]
 
-{{colline}} Elle alla ouvrir la fenêtre pour s'aérer, elle vit Sarah par la fenêtre qui regardait vers elle. Sarah se retourna et partit en courant en direction de la colline au Sud de la ville. Milena décida de la suivre.
+{{colline}} [[Elle alla ouvrir la fenêtre pour s'aérer, elle vit Sarah par la fenêtre qui regardait vers elle. Sarah se retourna et partit en courant en direction de la colline au Sud de la ville. Milena décida de la suivre.]]

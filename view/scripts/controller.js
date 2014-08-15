@@ -98,7 +98,7 @@ function addLineBreak(text) {
 }
 
 function parseText(str) {
-	var regex = /\{\{([A-Za-z0-9]+)\}\}\s*(.*)/gi;
+	var regex = /\{\{([A-Za-z0-9]+)\}\}\s*\[\[(.*?)\]\]/gi;
 	return str.replace(regex, '<div class="choice" data-choice="$1">$2</div>');
 }
 
